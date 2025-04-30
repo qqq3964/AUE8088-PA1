@@ -3,9 +3,8 @@ import torch
 
 # [TODO] Implement this!
 class MyF1Score(Metric):
-    def __init__(self):
+    def __init__(self, num_classes=200):
         super().__init__()
-        num_classes = 200
         self.add_state('TP', default=torch.zeros(num_classes), dist_reduce_fx='sum')
         self.add_state('FP', default=torch.zeros(num_classes), dist_reduce_fx='sum')
         self.add_state('FN', default=torch.zeros(num_classes), dist_reduce_fx='sum')

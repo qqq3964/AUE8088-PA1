@@ -15,18 +15,50 @@ import torch
 from src.metric import MyAccuracy, MyF1Score
 import src.config as cfg
 from src.util import show_setting
-
+from src.sota_network import ViT
 
 # [TODO: Optional] Rewrite this class if you want
-class MyNetwork(AlexNet):
-    def __init__(self):
+class MyNetwork(nn.Module):
+    def __init__(self, num_classes: int = 200, dropout: float = 0.5):
         super().__init__()
+        self.dropout = dropout
 
-        # [TODO] Modify feature extractor part in AlexNet
+        self.features = nn.Sequential(
+            nn.Conv2d(3, 48, kernel_size=5, padding=2), 
+            nn.BatchNorm2d(48),
+            nn.ReLU(inplace=True),
+            nn.Conv2d(48, 96, kernel_size=3, padding=1),
+            nn.BatchNorm2d(96),
+            nn.ReLU(inplace=True),
+            nn.MaxPool2d(kernel_size=2, stride=2),
 
+            nn.Conv2d(96, 192, kernel_size=3, padding=1),
+            nn.BatchNorm2d(192),
+            nn.ReLU(inplace=True),
+            nn.Conv2d(192, 192, kernel_size=3, padding=1),
+            nn.BatchNorm2d(192),
+            nn.ReLU(inplace=True),
+            nn.MaxPool2d(kernel_size=2, stride=2),
 
-    def forward(self, x: torch.Tensor) -> torch.Tensor:
-        # [TODO: Optional] Modify this as well if you want
+            nn.Conv2d(192, 256, kernel_size=3, padding=1),
+            nn.BatchNorm2d(256),
+            nn.ReLU(inplace=True),
+            nn.MaxPool2d(kernel_size=2, stride=2),
+        )
+
+        self.avgpool = nn.AdaptiveAvgPool2d((6, 6)) 
+
+        self.classifier = nn.Sequential(
+            nn.Dropout(p=dropout),
+            nn.Linear(256 * 6 * 6, 4096),
+            nn.ReLU(inplace=True),
+            nn.Dropout(p=dropout),
+            nn.Linear(4096, 4096),
+            nn.ReLU(inplace=True),
+            nn.Linear(4096, num_classes),
+        )
+
+    def forward(self, x):
         x = self.features(x)
         x = self.avgpool(x)
         x = torch.flatten(x, 1)
@@ -45,7 +77,9 @@ class SimpleClassifier(LightningModule):
 
         # Network
         if model_name == 'MyNetwork':
-            self.model = MyNetwork()
+            self.model = ViT(num_classes=num_classes,
+                             patch=4,
+                             N=2)
         else:
             models_list = models.list_models()
             assert model_name in models_list, f'Unknown model name: {model_name}. Choose one from {", ".join(models_list)}'
