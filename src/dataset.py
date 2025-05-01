@@ -12,7 +12,13 @@ from torchvision import transforms
 from torchvision.datasets import ImageFolder
 
 # Custom packages
-import src.config as cfg
+# import src.configs.config_b1 as cfg
+# import src.configs.config_b2 as cfg
+# import src.configs.config_b3 as cfg
+# import src.configs.config_b4 as cfg
+# import src.configs.config_b5 as cfg
+# import src.configs.config_b6 as cfg
+import src.configs.config_b7 as cfg
 
 
 class TinyImageNetDatasetModule(LightningDataModule):
@@ -44,6 +50,10 @@ class TinyImageNetDatasetModule(LightningDataModule):
             transforms.RandomRotation(cfg.IMAGE_ROTATION),
             transforms.RandomHorizontalFlip(cfg.IMAGE_FLIP_PROB),
             transforms.RandomCrop(cfg.IMAGE_NUM_CROPS, padding=cfg.IMAGE_PAD_CROPS),
+            transforms.ColorJitter(brightness=0.4, contrast=0.4, saturation=0.4, hue=0.1),  # 색상 변화
+            transforms.RandomGrayscale(p=0.1),                                              # 흑백 전환 확률적 적용
+            transforms.RandomAffine(degrees=10, translate=(0.05, 0.05), scale=(0.95, 1.05)),# 기하학적 왜곡
+            transforms.GaussianBlur(kernel_size=3, sigma=(0.1, 2.0)),                       # 가우시안 블러
             transforms.ToTensor(),
             transforms.Normalize(cfg.IMAGE_MEAN, cfg.IMAGE_STD),
         ])

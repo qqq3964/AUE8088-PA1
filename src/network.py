@@ -13,7 +13,13 @@ import torch
 
 # Custom packages
 from src.metric import MyAccuracy, MyF1Score
-import src.config as cfg
+# import src.configs.config_b1 as cfg
+# import src.configs.config_b2 as cfg
+# import src.configs.config_b3 as cfg
+# import src.configs.config_b4 as cfg
+# import src.configs.config_b5 as cfg
+# import src.configs.config_b6 as cfg
+import src.configs.config_b7 as cfg
 from src.util import show_setting
 from src.sota_network import ViT
 
@@ -79,7 +85,7 @@ class SimpleClassifier(LightningModule):
         if model_name == 'MyNetwork':
             self.model = ViT(num_classes=num_classes,
                              patch=4,
-                             N=2)
+                             N=4)
         else:
             models_list = models.list_models()
             assert model_name in models_list, f'Unknown model name: {model_name}. Choose one from {", ".join(models_list)}'

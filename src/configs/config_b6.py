@@ -2,14 +2,14 @@ import os
 
 # Training Hyperparameters
 NUM_CLASSES         = 200
-BATCH_SIZE          = 512
+BATCH_SIZE          = 128
 VAL_EVERY_N_EPOCH   = 1
 
-NUM_EPOCHS          = 40
-OPTIMIZER_PARAMS    = {'type': 'AdamW', 'lr': 3e-4, 'weight_decay': 1e-3}
-SCHEDULER_PARAMS    = {'type': 'CosineAnnealingLR', 'T_max': 50}
+NUM_EPOCHS          = 180
+OPTIMIZER_PARAMS    = {'type': 'AdamW', 'lr': 1e-4, 'weight_decay': 1e-3}
+SCHEDULER_PARAMS    = {'type': 'CosineAnnealingLR', 'T_max': 180}
 
-# Dataaset
+# Dataset
 DATASET_ROOT_PATH   = 'datasets/'
 NUM_WORKERS         = 8
 
@@ -22,11 +22,11 @@ IMAGE_MEAN          = [0.4802, 0.4481, 0.3975]
 IMAGE_STD           = [0.2302, 0.2265, 0.2262]
 
 # Network
-MODEL_NAME          = 'efficientnet_b1'
+MODEL_NAME          = 'efficientnet_b6'
 
 # Compute related
 ACCELERATOR         = 'gpu'
-DEVICES             = [0]
+DEVICES             = [1]
 PRECISION_STR       = '32-true'
 
 # Logging

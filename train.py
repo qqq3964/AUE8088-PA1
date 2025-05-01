@@ -12,7 +12,13 @@ import torch
 # Custom packages
 from src.dataset import TinyImageNetDatasetModule
 from src.network import SimpleClassifier
-import src.config as cfg
+# import src.configs.config_b1 as cfg
+# import src.configs.config_b2 as cfg
+# import src.configs.config_b3 as cfg
+# import src.configs.config_b4 as cfg
+# import src.configs.config_b5 as cfg
+# import src.configs.config_b6 as cfg
+import src.configs.config_b7 as cfg
 
 torch.set_float32_matmul_precision('medium')
 
